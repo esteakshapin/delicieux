@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <link rel="stylesheet" href="card_template_css.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $("#searchForm").submit(function(e) {
+        e.preventDefault();
+        var search = $('#search').val();
+        var INGREDIENT_LIST = search.replace(",", ",+")
+
+        const API_KEY = "e88f7a160bc84bd9942a101e7a29b2c4";
+
+        let requestString = "https://api.spoonacular.com/recipes/findByIngredients?apiKey=" + API_KEY + "&ingredients=" + INGREDIENT_LIST + "&number=10";
+        // let requestString = "https://api.spoonacular.com/recipes/findByIngredients?apiKey=e88f7a160bc84bd9942a101e7a29b2c4&ingredients=apples,+flour,+sugar&number=2";
+
+
+        $.ajax({
+          'async': false,
+          'global': false,
+          "type": "GET",
+          'url': requestString,
+          'dataType': "json",
+          'success': function(data) {
+            for (i = 0; i < data.length; i++) {
+              var title = data[i].title;
+              var img_link = data[i].image;
+              var NUM_LIKES = data[i].likes;
+              var USED_INGREDIENTS = data[i].usedIngredients;
+              var USED_INGREDIENTS_STRING = ""
+
+              console.log(USED_INGREDIENTS[0].name);
+
+
+
+              var MISSING_INGREDIENTS = data[i].missedIngredients;
+              var e = $(
+                '<div class="card"><img class="card__image" src="'+img_link+'" alt=""><div class="card__content"><h3>'+title+'</h3><p><span style="color:green">Used Ingridients</span>:'+USED_INGREDIENTS_STRING +'<br/><span style="color:red">Missing Ingridients</span>:{{MISSING_INGRIDIENTS}})</p></div><div class="card__info"><div><i class="material-icons">thumb_up</i>{{NUM_LIKES}}</div><div><a href="{{RECIPE_LINK}}" class="card__link">View Recipe</a></div></div></div>'
+              );
+              $("#cards_container").append(e);
+            }
+            console.log(data);
+          }
+        });
+      });
+
+    });
+  </script>
+
+</head>
+
+<body>
+  <h2>Seperate each ingridients via a comma</h2>
+  <form id="searchForm">
+    <label for="gsearch">Enter Ingidients:</label>
+    <input type="search" id="search" name="search">
+    <input type="submit">
+  </form>
+
+  <div class="cards" id="cards_container">
+
+  </div>
+
+  </div>
+
+</body>
+
+</html>
