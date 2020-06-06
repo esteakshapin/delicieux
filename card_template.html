@@ -1,20 +1,31 @@
-<div class="card">
-  <img class="card__image" src="https://fakeimg.pl/400x300/252c6a/fff/" alt="">
-  <div class="card__content">
-    <h3>{{TITLE}}</h3>
-    <p>
-      <span style="color:green">Used Ingridients</span>:
-      {{USED_INGRIDIENTS}}
-      <span style="color:red">Missing Ingridients</span>:
-      {{MISSING_INGRIDIENTS}})
-    </p>
-  </div>
-  <div class="card__info">
-    <div>
-      <i class="material-icons">thumb_up</i>{{NUM_LIKES}}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="card_template_css.css">
+  </head>
+  <body>
+    <div class="card">
+      <img class="card__image" src="https://fakeimg.pl/400x300/252c6a/fff/" alt="">
+      <div class="card__content">
+        <h3>{{TITLE}}</h3>
+        <p>
+          <span style="color:green">Used Ingridients</span>:
+          {{USED_INGRIDIENTS}}
+          <span style="color:red">Missing Ingridients</span>:
+          {{MISSING_INGRIDIENTS}})
+        </p>
+      </div>
+      <div class="card__info">
+        <div>
+          <i class="material-icons">thumb_up</i>{{NUM_LIKES}}
+        </div>
+        <div>
+          <a href="{{RECIPE_LINK}}" class="card__link">View Recipe</a>
+        </div>
+      </div>
     </div>
-    <div>
-      <a href="{{RECIPE_LINK}}" class="card__link">View Recipe</a>
-    </div>
-  </div>
-</div>
+
+  </body>
+</html>

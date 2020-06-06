@@ -11,6 +11,9 @@
     $(document).ready(function() {
       $("#searchForm").submit(function(e) {
         e.preventDefault();
+
+        $("#cards_container").empty();
+
         var search = $('#search').val();
         var INGREDIENT_LIST = search.replace(",", ",+")
 
@@ -21,7 +24,7 @@
 
 
         $.ajax({
-          'async': false,
+          'async': true,
           'global': false,
           "type": "GET",
           'url': requestString,
@@ -32,15 +35,19 @@
               var img_link = data[i].image;
               var NUM_LIKES = data[i].likes;
               var USED_INGREDIENTS = data[i].usedIngredients;
-              var USED_INGREDIENTS_STRING = ""
-
-              console.log(USED_INGREDIENTS[0].name);
-
-
-
               var MISSING_INGREDIENTS = data[i].missedIngredients;
+
+              var USED_INGREDIENTS_STRING = USED_INGREDIENTS.map(function(ingredient){
+                return ingredient.name + ' (x' + ingredient.amount+ ')';
+              }).join(", ");
+
+
+              var MISSING_INGREDIENTS_STRING = MISSING_INGREDIENTS.map(function(ingredient){
+                return ingredient.name + ' (x' + ingredient.amount+ ')';
+              }).join(", ");
+
               var e = $(
-                '<div class="card"><img class="card__image" src="'+img_link+'" alt=""><div class="card__content"><h3>'+title+'</h3><p><span style="color:green">Used Ingridients</span>:'+USED_INGREDIENTS_STRING +'<br/><span style="color:red">Missing Ingridients</span>:{{MISSING_INGRIDIENTS}})</p></div><div class="card__info"><div><i class="material-icons">thumb_up</i>{{NUM_LIKES}}</div><div><a href="{{RECIPE_LINK}}" class="card__link">View Recipe</a></div></div></div>'
+                '<div class="card"><img class="card__image" src="'+img_link+'" alt=""><div class="card__content"><h3>'+title+'</h3><p><span style="color:green">Used Ingridients</span>: '+USED_INGREDIENTS_STRING +'<br/><span style="color:red">Missing Ingridients</span>: '+ MISSING_INGREDIENTS_STRING+'</p></div><div class="card__info"><div><i class="material-icons">thumb_up</i>'+ NUM_LIKES +'</div><div><a href="{{RECIPE_LINK}}" class="card__link">View Recipe</a></div></div></div>'
               );
               $("#cards_container").append(e);
             }
