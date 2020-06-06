@@ -63,19 +63,17 @@
 
 <body>
   <h2>Seperate each ingridients via a comma</h2>
-
-  <div class="search-form">
-    <form id="searchForm">
-      <div class="search-text">
-        <input type="text" id="search" name="search" value="Type Ingridient Here..">
-      </div>
-      <div class="">
-        <button type="submit" class="btn btn-success">
-          <i class="icon-circle-arrow-right icon-large"></i> Next
-        </button>
-      </div>   
-    </form>
+  <div class="search-box-container">
+    <div class="search-box">
+      <form id="searchForm">
+          <input class="search-text" type="text" id="search" name="search" placeholder="Type Ingridient Here..">
+          <button type="submit" class="search-btn">
+            <i class="material-icons">search</i>
+          </button>
+      </form>
+    </div>
   </div>
+
 
   <div class="cards" id="cards_container">
 

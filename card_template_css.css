@@ -10,7 +10,7 @@
     padding-top: 30px;
 }
 
-h2, form{
+h2{
   margin: auto;
   text-align: center;
   padding: .3em;
@@ -90,8 +90,50 @@ h2, form{
     text-decoration: underline;
 }
 
-#search{
-  border-radius: 25%;
-  border-color: #87CEFA;
+.search-box-container{
+  position: relative;
+  height: 60px;
+  padding-top: 30px;
+}
+
+.search-box{
+  background: red;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #E5F3FF;
+  height: 40px;
+  border-radius: 40px;
+  padding: 10px;
+  width: 50%;
+}
+
+.search-text{
+  border: none;
+  background: none;
+  outline: none;
+  float: left;;
+  padding: 0;
+  color: black;
+  font-size: 16px;
+  transition: .4s;
   line-height: 40px;
+  width: calc(100% - 50px);
+  display: flex;
+
+}
+
+.search-btn{
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  float: right;
+  color: white;
+  background-color: #87CEFA;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  border-style: none;
+
 }
