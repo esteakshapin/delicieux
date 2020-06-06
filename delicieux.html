@@ -63,11 +63,19 @@
 
 <body>
   <h2>Seperate each ingridients via a comma</h2>
-  <form id="searchForm">
-    <label for="gsearch">Enter Ingidients:</label>
-    <input type="search" id="search" name="search">
-    <input type="submit">
-  </form>
+
+  <div class="search-form">
+    <form id="searchForm">
+      <div class="search-text">
+        <input type="text" id="search" name="search" value="Type Ingridient Here..">
+      </div>
+      <div class="">
+        <button type="submit" class="btn btn-success">
+          <i class="icon-circle-arrow-right icon-large"></i> Next
+        </button>
+      </div>   
+    </form>
+  </div>
 
   <div class="cards" id="cards_container">
 

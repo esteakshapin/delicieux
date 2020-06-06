@@ -89,3 +89,9 @@ h2, form{
 .card__link:hover {
     text-decoration: underline;
 }
+
+#search{
+  border-radius: 25%;
+  border-color: #87CEFA;
+  line-height: 40px;
+}
