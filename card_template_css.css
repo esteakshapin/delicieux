@@ -1,3 +1,9 @@
+html,body{
+  padding: 0;
+  margin: 0;
+  background: #E5F3FF;
+}
+
 .cards {
     margin: 0 auto;
     max-width: 1000px;
@@ -97,7 +103,6 @@ h2{
 }
 
 .search-box{
-  background: red;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -107,6 +112,7 @@ h2{
   border-radius: 40px;
   padding: 10px;
   width: 50%;
+  border: solid 2px #5CBAF3;
 }
 
 .search-text{
@@ -137,3 +143,35 @@ h2{
   border-style: none;
 
 }
+
+/* Nav bar */
+.active{
+  background-color: #5CBAF3;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #87CEFA;
+  position: fixed;
+  width: 100%;
+  z-index: 1000;
+}
+li {
+  float: left;
+}
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover:not(.active) {
+  background-color: #5CBAF3;
+}
+
+
