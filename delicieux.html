@@ -8,23 +8,31 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script type="text/javascript">
+    function myrun(){
+      $("#loader").show();
+      $("#cards_container").empty();
+      console.log("hello");
+    };
     $(document).ready(function() {
       $("#searchForm").submit(function(e) {
         e.preventDefault();
 
         $("#cards_container").empty();
 
+        $("#loader").show();
+
         var search = $('#search').val();
         var INGREDIENT_LIST = search.replace(",", ",+")
 
         const API_KEY = "e88f7a160bc84bd9942a101e7a29b2c4";
+        const API_KEY_2 = "76660cfbc81b4f2385bab97178224551"
 
-        let requestString = "https://api.spoonacular.com/recipes/findByIngredients?apiKey=" + API_KEY + "&ingredients=" + INGREDIENT_LIST + "&number=10";
+        let requestString = "https://api.spoonacular.com/recipes/findByIngredients?apiKey=" + API_KEY_2 + "&ingredients=" + INGREDIENT_LIST + "&number=10";
         // let requestString = "https://api.spoonacular.com/recipes/findByIngredients?apiKey=e88f7a160bc84bd9942a101e7a29b2c4&ingredients=apples,+flour,+sugar&number=2";
 
 
         $.ajax({
-          'async': true,
+          'async': false,
           'global': false,
           "type": "GET",
           'url': requestString,
@@ -36,6 +44,19 @@
               var NUM_LIKES = data[i].likes;
               var USED_INGREDIENTS = data[i].usedIngredients;
               var MISSING_INGREDIENTS = data[i].missedIngredients;
+              var recipeLink = "";
+              $.ajax({
+                'async': false,
+                'global': false,
+                "type": "GET",
+                'url': "https://api.spoonacular.com/recipes/"+data[i].id+"/information?apiKey="+API_KEY_2,
+                'dataType': "json",
+                'success': function(data) {
+                  recipeLink = data.sourceUrl;
+
+                }
+              });
+
 
               var USED_INGREDIENTS_STRING = USED_INGREDIENTS.map(function(ingredient){
                 return ingredient.name + ' (x' + ingredient.amount+ ')';
@@ -47,7 +68,7 @@
               }).join(", ");
 
               var e = $(
-                '<div class="card"><img class="card__image" src="'+img_link+'" alt=""><div class="card__content"><h3>'+title+'</h3><p><span style="color:green">Used Ingridients</span>: '+USED_INGREDIENTS_STRING +'<br/><span style="color:red">Missing Ingridients</span>: '+ MISSING_INGREDIENTS_STRING+'</p></div><div class="card__info"><div><i class="material-icons">thumb_up</i>'+ NUM_LIKES +'</div><div><a href="{{RECIPE_LINK}}" class="card__link">View Recipe</a></div></div></div>'
+                '<div class="card"><img class="card__image" src="'+img_link+'" alt=""><div class="card__content"><h3>'+title+'</h3><p><span style="color:green">Used Ingridients</span>: '+USED_INGREDIENTS_STRING +'<br/><span style="color:red">Missing Ingridients</span>: '+ MISSING_INGREDIENTS_STRING+'</p></div><div class="card__info"><div><i class="material-icons">thumb_up</i>'+ NUM_LIKES +'</div><div><a href="'+recipeLink+'" class="card__link">View Recipe</a></div></div></div>'
               );
               $("#cards_container").append(e);
             }
@@ -76,7 +97,7 @@
   <h2>Seperate each ingridients via a comma</h2>
   <div class="search-box-container">
     <div class="search-box">
-      <form id="searchForm">
+      <form id="searchForm" onsubmit="myrun()">
           <input class="search-text" type="text" id="search" name="search" placeholder="Type Ingridient Here..">
           <button type="submit" class="search-btn">
             <i class="material-icons">search</i>
@@ -89,6 +110,8 @@
   <div class="cards" id="cards_container">
 
   </div>
+
+  <div class="loader" id="loader"></div>
 
 </body>
 
