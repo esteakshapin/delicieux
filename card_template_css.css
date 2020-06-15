@@ -166,6 +166,8 @@ h2{
   z-index: 100;
   /* display: inline; */
   visibility: hidden;
+  border: 3px solid #87CEFA;
+  border-top: none;
 
 }
 .autocomplete li{

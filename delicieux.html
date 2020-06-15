@@ -12,7 +12,9 @@
 
       const API_KEY = "e88f7a160bc84bd9942a101e7a29b2c4";
       const API_KEY_2 = "76660cfbc81b4f2385bab97178224551";
-      const current_api_key = API_KEY;
+      const API_KEY_3 = "2e63c91728ad4067bd87bfefd2b7b52a";
+      const API_KEY_4 = "1f4e59ab1e33489bb831d2bee33375df";
+      const current_api_key = API_KEY_4;
 
       const ingridients_autocomplete_url = "https://api.spoonacular.com/food/ingredients/autocomplete?number=5&apiKey="+current_api_key;
 
@@ -63,8 +65,11 @@
         var value = element.id;
         if ($("#search").val().lastIndexOf(",") != -1) {
           var value = $("#search").val()+element.id;
+          var value = value.substr(0,$("#search").val().lastIndexOf(",")+1)+element.id;
+          console.log("trimming: " + value);
         }
         $("#search").val(value+',');
+        document.getElementById("search").focus();
       };
 
 
@@ -76,6 +81,8 @@
         $("#cards_container").empty();
 
         $("#loader").show();
+
+        document.getElementById("autocomplete").style.visibility = "hidden";
 
         var search = $('#search').val();
         var INGREDIENT_LIST = search.replace(/,/g, ",+")
@@ -96,7 +103,7 @@
           },
           complete: function(){
             document.getElementById("loader").style.visibility = "hidden";
-            document.getElementById("autocomplete-ul").style.visibility = "hidden";
+            document.getElementById("autocomplete").style.visibility = "hidden";
 
           },
           'success': function(data) {
@@ -168,19 +175,6 @@
     </div>
     <div class="autocomplete" id="autocomplete">
       <ul class="autocomplete-ul" id="autocomplete-ul">
-        <li>
-          <div class="img">
-            <img src="https://spoonacular.com/cdn/ingredients_100x100/apple-jelly.jpg" />
-          </div>
-
-          <div class="content">
-            <span class="item-title">item#1</span> <br /><span class="item-description"> produce</span>
-          </div>
-
-        </li>
-        <li>
-          item#2
-        </li>
 
       </ul>
 
