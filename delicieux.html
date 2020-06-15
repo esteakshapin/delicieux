@@ -8,12 +8,68 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script type="text/javascript">
-    function myrun(){
-      $("#loader").show();
-      $("#cards_container").empty();
-      console.log("hello");
-    };
     $(document).ready(function() {
+
+      const API_KEY = "e88f7a160bc84bd9942a101e7a29b2c4";
+      const API_KEY_2 = "76660cfbc81b4f2385bab97178224551";
+      const current_api_key = API_KEY;
+
+      const ingridients_autocomplete_url = "https://api.spoonacular.com/food/ingredients/autocomplete?number=5&apiKey="+current_api_key;
+
+
+      $("#search").keyup(function () {
+        var search = $(this).val();
+        if (search.lastIndexOf(",") != -1) {
+          var search = search.substr(search.lastIndexOf(",") + 1);
+        }
+
+        console.log(search);
+
+
+        if (search != ""){
+          document.getElementById("autocomplete").style.visibility = "visible";
+          console.log(search);
+
+          $.ajax({
+            'async': true,
+            'global': false,
+            "type": "GET",
+            'url': ingridients_autocomplete_url+"&query="+search,
+            'dataType': "json",
+            'success': function(data) {
+              $("#autocomplete-ul").empty();
+
+              for(i = 0; i < data.length; i++){
+                var title = data[i].name;
+                var img_name = data[i].image;
+                var e = $('<li id="'+title+'"><div class="img"><img src="https://spoonacular.com/cdn/ingredients_100x100/'+img_name+'" /></div><div class="content"><span class="item-title">'+title+'</span></div></li>');
+                $("#autocomplete-ul").append(e);
+              }
+
+              // binding click event to li
+              $("#autocomplete-ul li").bind("click",function(){
+                  setText(this);
+              });
+
+            }
+          });
+        }else {
+          document.getElementById("autocomplete").style.visibility = "hidden";
+
+        }
+      });
+
+      function setText(element){
+        var value = element.id;
+        if ($("#search").val().lastIndexOf(",") != -1) {
+          var value = $("#search").val()+element.id;
+        }
+        $("#search").val(value+',');
+      };
+
+
+
+
       $("#searchForm").submit(function(e) {
         e.preventDefault();
 
@@ -22,21 +78,27 @@
         $("#loader").show();
 
         var search = $('#search').val();
-        var INGREDIENT_LIST = search.replace(",", ",+")
+        var INGREDIENT_LIST = search.replace(/,/g, ",+")
 
-        const API_KEY = "e88f7a160bc84bd9942a101e7a29b2c4";
-        const API_KEY_2 = "76660cfbc81b4f2385bab97178224551"
-
-        let requestString = "https://api.spoonacular.com/recipes/findByIngredients?apiKey=" + API_KEY_2 + "&ingredients=" + INGREDIENT_LIST + "&number=10";
+        let requestString = "https://api.spoonacular.com/recipes/findByIngredients?apiKey=" + current_api_key + "&ingredients=" + INGREDIENT_LIST + "&number=10";
         // let requestString = "https://api.spoonacular.com/recipes/findByIngredients?apiKey=e88f7a160bc84bd9942a101e7a29b2c4&ingredients=apples,+flour,+sugar&number=2";
 
 
         $.ajax({
-          'async': false,
+          'async': true,
           'global': false,
           "type": "GET",
           'url': requestString,
           'dataType': "json",
+          'beforeSend': function(){
+            console.log("before");
+            document.getElementById("loader").style.visibility = "visible";
+          },
+          complete: function(){
+            document.getElementById("loader").style.visibility = "hidden";
+            document.getElementById("autocomplete-ul").style.visibility = "hidden";
+
+          },
           'success': function(data) {
             for (i = 0; i < data.length; i++) {
               var title = data[i].title;
@@ -49,7 +111,7 @@
                 'async': false,
                 'global': false,
                 "type": "GET",
-                'url': "https://api.spoonacular.com/recipes/"+data[i].id+"/information?apiKey="+API_KEY_2,
+                'url': "https://api.spoonacular.com/recipes/"+data[i].id+"/information?apiKey="+current_api_key,
                 'dataType': "json",
                 'success': function(data) {
                   recipeLink = data.sourceUrl;
@@ -83,7 +145,7 @@
 </head>
 
 <body>
-  <ul>
+  <ul class="nav_bar">
     <li><a href="index.html" >Home</a></li>
     <li><a href="delicieux.html" class="active"> Recipe Search</a></li>
     <li><a href="#Recipe List">Recipe List</a></li>
@@ -97,12 +159,31 @@
   <h2>Seperate each ingridients via a comma</h2>
   <div class="search-box-container">
     <div class="search-box">
-      <form id="searchForm" onsubmit="myrun()">
-          <input class="search-text" type="text" id="search" name="search" placeholder="Type Ingridient Here..">
+      <form id="searchForm">
+          <input autocomplete="off" class="search-text" type="text" id="search" name="search" placeholder="Type Ingridient Here..">
           <button type="submit" class="search-btn">
             <i class="material-icons">search</i>
           </button>
       </form>
+    </div>
+    <div class="autocomplete" id="autocomplete">
+      <ul class="autocomplete-ul" id="autocomplete-ul">
+        <li>
+          <div class="img">
+            <img src="https://spoonacular.com/cdn/ingredients_100x100/apple-jelly.jpg" />
+          </div>
+
+          <div class="content">
+            <span class="item-title">item#1</span> <br /><span class="item-description"> produce</span>
+          </div>
+
+        </li>
+        <li>
+          item#2
+        </li>
+
+      </ul>
+
     </div>
   </div>
 
